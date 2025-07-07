@@ -6,14 +6,14 @@ using static UnityEngine.Rendering.DebugUI.Table;
 public class BoxController: MonoBehaviour
 {
     [SerializeField] private Vector3 startPosition;
+    [SerializeField] private float boxWidth;
+    [SerializeField] private float boxHeight;
     [SerializeField] private float spacingX;
 
     [SerializeField] private int floorCount = 9;
     [SerializeField] private GameObject boxPrefab;
 
     private List<Transform> floors;
-    private float boxWidth;
-    private float boxHeight;
     
     void Start()
     {
@@ -23,18 +23,8 @@ public class BoxController: MonoBehaviour
     private void Initialize()
     {
         floors = new List<Transform>();
-        SetBoxSize();
 
         GenerateFloorsAndBoxes();
-    }
-
-    private void SetBoxSize()
-    {
-        BoxCollider collider = boxPrefab.GetComponent<BoxCollider>();
-        Vector3 scale = boxPrefab.transform.localScale;
-
-        boxWidth = collider.size.x * scale.x;
-        boxHeight = collider.size.y * scale.y;
     }
     private void GenerateFloorsAndBoxes()
     {
