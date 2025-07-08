@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class BoxController: MonoBehaviour
 {
+    [SerializeField] private Ease ease;
+    [SerializeField] private float dropDuration = 2.0f;
+
     [SerializeField] private Vector3 startPosition;
     [SerializeField] private float boxWidth;
     [SerializeField] private float boxHeight;
@@ -120,5 +125,20 @@ public class BoxController: MonoBehaviour
             b.gameObject.SetActive(false);
         }
         floor.gameObject.SetActive(false);
+
+        DropUpperFloors(floor);
+
+        floors.Remove(floor);
+    }
+    private void DropUpperFloors(Transform floor)
+    {
+        for (int curFloor = 0; curFloor < floors.Count - 1; curFloor++)
+        {
+            if (floors[curFloor] == floor)
+                break;
+
+            int nextFloor = curFloor + 1;
+            floors[curFloor].DOMoveY(floors[nextFloor].position.y, dropDuration).SetEase(ease);
+        }
     }
 }
