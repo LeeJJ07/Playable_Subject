@@ -18,6 +18,8 @@ public class Box : MonoBehaviour
     private Vector3 offset = new Vector3(0.1f, -0.3f, -0.15f);
     private float waitSecond = 0.2f;
 
+    public static event Action<Box> OnGoodsPlaced;
+
     private void Start()
     {
         StartCoroutine(GenerateGoods());
@@ -42,5 +44,6 @@ public class Box : MonoBehaviour
     public void SetGoods(int goodsID)
     {
         this.goodsID = goodsID;
+        OnGoodsPlaced?.Invoke(this);
     }
 }

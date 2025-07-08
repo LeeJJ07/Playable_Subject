@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BoxController: MonoBehaviour
@@ -34,6 +35,8 @@ public class BoxController: MonoBehaviour
         floors = new List<Transform>();
         boxes = new List<GameObject>();
         goods = new int[(1 + floorCount) * floorCount / 2];
+
+        Box.OnGoodsPlaced += ClearFloor;
 
         GenerateFloorsAndBoxes();
     }
@@ -101,5 +104,21 @@ public class BoxController: MonoBehaviour
             box.SetGoodsMaterial(goodsMaterials[goods[boxIndex] - 1]);
             box.SetGoods(goods[boxIndex]);
         }
+    }
+
+    private void ClearFloor(Box box)
+    {
+        Transform floor = box.transform.parent;
+        Box[] boxesOnFloor = floor.GetComponentsInChildren<Box>();
+
+        if (!boxesOnFloor.All(b => b.HasGoods && b.GoodsID == b.ColorID))
+            return;
+        
+        foreach(var b in boxesOnFloor)
+        {
+            b.transform.GetChild(0).gameObject.SetActive(false);
+            b.gameObject.SetActive(false);
+        }
+        floor.gameObject.SetActive(false);
     }
 }
