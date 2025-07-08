@@ -117,8 +117,10 @@ public class BoxController: MonoBehaviour
 
         if (!boxesOnFloor.All(b => b.HasGoods && b.GoodsID == b.ColorID))
             return;
-        
-        foreach(var b in boxesOnFloor)
+
+        SoundManager.Instance.Play("ClearSound");
+
+        foreach (var b in boxesOnFloor)
         {
             b.transform.GetChild(0).gameObject.SetActive(false);
             b.gameObject.SetActive(false);

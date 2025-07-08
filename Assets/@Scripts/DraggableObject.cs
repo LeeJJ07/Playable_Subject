@@ -35,6 +35,8 @@ public class DraggableObject : MonoBehaviour
     {
         isDragging = false;
 
+        SoundManager.Instance.Play("MouseUpSound");
+
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(ray);
 
