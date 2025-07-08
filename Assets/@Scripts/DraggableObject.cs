@@ -6,8 +6,10 @@ public class DraggableObject : MonoBehaviour
 {
     [SerializeField] private float objectZPosition;
     private Vector3 offsetHeightVec;
+    private Vector3 offset = new Vector3(0.1f, -0.3f, -0.15f);
 
-    private Vector3 prevPos;
+    private Box originalBox;
+
     private bool isDragging = false;
     private Camera cam;
 
@@ -26,14 +28,38 @@ public class DraggableObject : MonoBehaviour
     private void OnMouseDown()
     {
         isDragging = true;
-        prevPos = transform.position;
+        originalBox = transform.parent.GetComponent<Box>();
     }
 
-    private void OnMouseUp() 
+    private void OnMouseUp()
     {
         isDragging = false;
-        transform.position = prevPos;
+
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+
+        foreach (var hit in hits)
+        {
+            if (hit.collider.gameObject == gameObject)
+                continue;
+
+            Box targetBox = hit.collider.GetComponent<Box>();
+            if (targetBox != null && !targetBox.HasGoods)
+            {
+                if (originalBox != null)
+                    originalBox.SetGoods(0);
+
+                transform.SetParent(targetBox.transform);
+                transform.position = targetBox.transform.position + offset;
+
+                targetBox.SetGoods(GetComponent<Goods>().ID);
+                return;
+            }
+        }
+
+        transform.position = originalBox.transform.position + offset;
     }
+
 
     private void DragObject()
     {

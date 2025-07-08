@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class BoxController: MonoBehaviour
 {
@@ -28,6 +24,11 @@ public class BoxController: MonoBehaviour
         Initialize();
     }
     
+    private void Start()
+    {
+        ShuffleGoods();
+        SetGoodsInBox();
+    }
     private void Initialize()
     {
         floors = new List<Transform>();
@@ -35,11 +36,6 @@ public class BoxController: MonoBehaviour
         goods = new int[(1 + floorCount) * floorCount / 2];
 
         GenerateFloorsAndBoxes();
-    }
-    private void Start()
-    {
-        ShuffleGoods();
-        SetGoodsInBox();
     }
     private void GenerateFloorsAndBoxes()
     {
@@ -103,8 +99,7 @@ public class BoxController: MonoBehaviour
         {
             Box box = boxes[boxIndex].GetComponent<Box>();
             box.SetGoodsMaterial(goodsMaterials[goods[boxIndex] - 1]);
-            box.GoodsID = goods[boxIndex];
+            box.SetGoods(goods[boxIndex]);
         }
     }
-
 }
