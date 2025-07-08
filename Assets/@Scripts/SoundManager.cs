@@ -96,20 +96,22 @@ public class SoundManager : MonoBehaviour
 
     AudioClip GetOrAddAudioClip(string path, ESoundType type = ESoundType.EFFECT)
     {
-        if (path.Contains("Assets/@Assets/Sounds") == false)
-            path = $"Assets/@Assets/Sounds/{path}";
+        if (path.Contains("Sounds") == false)
+            path = $"Sounds/{path}";
 
         AudioClip audioClip = null;
 
         if (type == ESoundType.BGM)
         {
-            audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            Debug.Log($"Trying to load: {path}");
+            audioClip = Resources.Load<AudioClip>(path);
+            Debug.Log(audioClip != null ? "Loaded successfully!" : "Failed to load.");
         }
         else
         {
             if (audioClips.TryGetValue(path, out audioClip) == false)
             {
-                audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+                audioClip = Resources.Load<AudioClip>(path);
                 audioClips.Add(path, audioClip);
             }
         }

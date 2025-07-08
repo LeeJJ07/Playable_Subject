@@ -78,6 +78,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0afa25cb82bcc4cc9914399f1ceee635,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0afa25cb82bcc4cc9914399f1ceee635,
         type: 3}
       propertyPath: m_Name
@@ -137,3 +142,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goodsPrefab: {fileID: 968187723226960318, guid: 76755c540a1249b499ffe935efea8827,
     type: 3}
+  goodsID: 0

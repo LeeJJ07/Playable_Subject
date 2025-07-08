@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        SoundManager.Instance.Play("BackGroundMusic.wav", ESoundType.BGM);
+        SoundManager.Instance.Play("BackGroundMusic", ESoundType.BGM);
     }
 
     private void Initialize()
