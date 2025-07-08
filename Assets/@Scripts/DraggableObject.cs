@@ -6,7 +6,7 @@ public class DraggableObject : MonoBehaviour
 {
     [SerializeField] private float objectZPosition;
     private Vector3 offsetHeightVec;
-    private Vector3 offset = new Vector3(0.1f, -0.3f, -0.15f);
+    private Vector3 offset = new Vector3(0.165f, -0.5f, -0.285f);
 
     private Box originalBox;
 

@@ -365,11 +365,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ease: 30
-  dropDuration: 2
-  startPosition: {x: 0, y: 3, z: 0}
-  boxWidth: 0.5
-  boxHeight: 0.63
-  spacingX: 0.07
+  dropDuration: 1.75
+  startPosition: {x: 0, y: 4, z: 0}
+  boxWidth: 0.78
+  boxHeight: 0.985
+  spacingX: 0.08
   floorCount: 9
   boxPrefab: {fileID: 745254804199330821, guid: 71d2f213bf9b29a4aa697d91ae70dd9e,
     type: 3}
