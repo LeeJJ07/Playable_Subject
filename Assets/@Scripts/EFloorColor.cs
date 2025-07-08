@@ -12,5 +12,5 @@ public enum EFloorColor
     YELLOW,
     RED,
     PURPLE,
-    SKYBLUE
+    CYAN
 }
