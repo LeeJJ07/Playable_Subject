@@ -9,10 +9,6 @@ public enum ESoundType
     MAX_COUNT,
 }
 
-public enum ESoundName
-{
-
-}
 public class SoundManager : MonoBehaviour
 {
     private static SoundManager instance;
