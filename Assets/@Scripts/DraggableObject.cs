@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class DraggableObject : MonoBehaviour
 {
-    private float offsetHeight;
+    [SerializeField] private float objectZPosition;
+    private Vector3 offsetHeightVec;
+
     private Vector3 prevPos;
     private bool isDragging = false;
     private Camera cam;
@@ -12,7 +14,8 @@ public class DraggableObject : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
-        offsetHeight = GetComponent<Collider>().bounds.size.y / 2.0f;
+
+        offsetHeightVec = Vector3.down * GetComponent<Collider>().bounds.size.y / 2.0f;
     }
 
     private void Update()
@@ -24,7 +27,6 @@ public class DraggableObject : MonoBehaviour
     {
         isDragging = true;
         prevPos = transform.position;
-
     }
 
     private void OnMouseUp() 
@@ -38,7 +40,9 @@ public class DraggableObject : MonoBehaviour
         if (!isDragging)
             return;
 
-        transform.position = GetMouseWorldPos() + Vector3.down * offsetHeight;
+        Vector3 targetPos = GetMouseWorldPos() + offsetHeightVec;
+        targetPos.z = objectZPosition;
+        transform.position = targetPos;
     }
 
     private Vector3 GetMouseWorldPos()
