@@ -1,24 +1,24 @@
 {
-  "BuildID": "8ccab839-5f70-4242-b965-e752c532aa7f",
+  "BuildID": "3c2c2f2f-8063-43e7-bd26-420c79224be1",
   "Command": "project:build",
   "ProjectID": "1ea3bb43f778449c78ecaf64beaf075a",
-  "ProjectStateHash": "85348ac298e3bfccff63e4985a5f27af9965921b56d0277986f27972b1ae0c3a",
+  "ProjectStateHash": "bc9cd014ba36d99c119d9fd0a311a06ba13d74e248227f38ac396bf34cb802b3",
   "StageCompletedAt": 3,
   "EarliestFatalError": 0,
-  "StartTime": 1751996576901,
-  "EndTime": 1751996595880,
+  "StartTime": 1752001055560,
+  "EndTime": 1752001075274,
   "PlaygroundUserID": 25441,
   "OperatingSystem": "win32",
   "UnityPackageID": null,
-  "TargetPlatform": "develop",
+  "TargetPlatform": "playground",
   "UnityVersion": "2022.3.60f1\r",
   "LunaVersion": "6.3.0",
-  "LogCount": 10,
+  "LogCount": 9,
   "Logs": [
     {
-      "LogID": "fdf62034-0e44-4f1a-b014-8a4f02bd8736",
+      "LogID": "8e640441-b37a-432a-83f4-c0e0acf1801a",
       "Order": 7,
-      "Timestamp": 1751996596052,
+      "Timestamp": 1752001075448,
       "Stage": 3,
       "ErrorType": 1,
       "ErrorCode": "LP3006",
@@ -42,35 +42,9 @@
       "Severity": 0
     },
     {
-      "LogID": "5cc4d253-78f5-436b-bf5f-a7588b634373",
+      "LogID": "fc318512-d1a6-48e2-8a8a-7fa927727712",
       "Order": 7,
-      "Timestamp": 1751996596052,
-      "Stage": 3,
-      "ErrorType": 1,
-      "ErrorCode": "LP3015",
-      "Description": "You are not the Game Ended API: LifeCycle.GameEnded",
-      "Details": [
-        "You are not using the Game Ended API: LifeCycle.GameEnded. Some ad networks require this call, please add the event to avoid the ad being rejected."
-      ],
-      "DescriptionValues": [
-        "LifeCycle",
-        "GameEnded"
-      ],
-      "DetailsValues": [
-        "LifeCycle",
-        "GameEnded"
-      ],
-      "LogCount": 1,
-      "LinePosition": null,
-      "FilePath": "",
-      "ClassName": "",
-      "MemberName": "",
-      "Severity": 0
-    },
-    {
-      "LogID": "78229c86-0a74-4f11-a507-5fbd261b835e",
-      "Order": 7,
-      "Timestamp": 1751996596052,
+      "Timestamp": 1752001075448,
       "Stage": 3,
       "ErrorType": 3,
       "ErrorCode": "LP3007",
@@ -92,9 +66,9 @@
       "Severity": 0
     },
     {
-      "LogID": "eea19193-9159-463a-937b-4861f792ae32",
+      "LogID": "ec41e671-ba02-421f-8a4f-7c2c1a55c04c",
       "Order": 7,
-      "Timestamp": 1751996596052,
+      "Timestamp": 1752001075448,
       "Stage": 3,
       "ErrorType": 3,
       "ErrorCode": "LP3011",
@@ -112,9 +86,9 @@
       "Severity": 0
     },
     {
-      "LogID": "d8fb06bf-8b13-4cd5-b17e-5d87692a225a",
+      "LogID": "9d2f2eea-a55f-4d4e-bf74-6a92e4aec5ae",
       "Order": 0,
-      "Timestamp": 1751996579059,
+      "Timestamp": 1752001058133,
       "Stage": 1,
       "ErrorType": 0,
       "ErrorCode": "LP1006",
@@ -132,9 +106,9 @@
       "Severity": 0
     },
     {
-      "LogID": "a1cae956-ea1c-487d-a8d2-4db64a23c11d",
+      "LogID": "dd924d18-19fa-4120-9d75-024891a995e9",
       "Order": 1,
-      "Timestamp": 1751996579059,
+      "Timestamp": 1752001058133,
       "Stage": 1,
       "ErrorType": 2,
       "ErrorCode": "LP1014",
@@ -152,9 +126,9 @@
       "Severity": 0
     },
     {
-      "LogID": "687545e8-30fb-4773-8c5b-2eae504525a6",
+      "LogID": "14c4dcea-c8fb-4560-85ec-d9b53c662dd4",
       "Order": 2,
-      "Timestamp": 1751996579068,
+      "Timestamp": 1752001058143,
       "Stage": 1,
       "ErrorType": 0,
       "ErrorCode": "LP1027",
@@ -174,9 +148,9 @@
       "Severity": 0
     },
     {
-      "LogID": "0478f728-4150-4e3e-a576-850a4520c58a",
+      "LogID": "ba5819e4-8d76-4eab-b1f2-915cd5de1da8",
       "Order": 3,
-      "Timestamp": 1751996579068,
+      "Timestamp": 1752001058143,
       "Stage": 1,
       "ErrorType": 0,
       "ErrorCode": "LP1015",
@@ -196,9 +170,9 @@
       "Severity": 0
     },
     {
-      "LogID": "0125a5f7-a868-40f6-92d9-14cd6fc2447b",
+      "LogID": "6ba51b91-9c02-4447-8fde-6df82b0cfbb0",
       "Order": 4,
-      "Timestamp": 1751996579068,
+      "Timestamp": 1752001058143,
       "Stage": 1,
       "ErrorType": 0,
       "ErrorCode": "LP1032",
@@ -220,15 +194,15 @@
       "Severity": 0
     },
     {
-      "LogID": "fd486ce2-34d9-44c8-9e5c-8f8487a28e43",
+      "LogID": "17bf2186-1202-4a14-a640-15a9a6441668",
       "Order": 5,
-      "Timestamp": 1751996579068,
+      "Timestamp": 1752001058143,
       "Stage": 1,
       "ErrorType": 2,
       "ErrorCode": "LP1010",
       "Description": "Looks like a collider was scaled, this might affect performance.",
       "Details": [
-        "Case1",
+        "BoxCase",
         "Goods"
       ],
       "DescriptionValues": [],

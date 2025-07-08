@@ -1,8 +1,16 @@
+using Luna.Unity;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	[SerializeField]
+	private int floorCount = 9;
+
+	private int clearFloorCount = 0;
+
 	private static GameManager instance;
+
+	public int FloorCount => floorCount;
 
 	public static GameManager Instance
 	{
@@ -44,5 +52,15 @@ public class GameManager : MonoBehaviour
 	private void Initialize()
 	{
 		SoundManager.Instance.Initialize();
+	}
+
+	public void OnFloorCleared()
+	{
+		clearFloorCount++;
+		SoundManager.Instance.Play("ClearSound");
+		if (clearFloorCount == floorCount)
+		{
+			LifeCycle.GameEnded();
+		}
 	}
 }

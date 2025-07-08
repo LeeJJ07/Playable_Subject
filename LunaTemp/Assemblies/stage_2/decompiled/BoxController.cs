@@ -24,9 +24,6 @@ public class BoxController : MonoBehaviour
 	private float spacingX;
 
 	[SerializeField]
-	private int floorCount = 9;
-
-	[SerializeField]
 	private GameObject boxPrefab;
 
 	[SerializeField]
@@ -56,14 +53,14 @@ public class BoxController : MonoBehaviour
 	{
 		floors = new List<Transform>();
 		boxes = new List<GameObject>();
-		goods = new int[(1 + floorCount) * floorCount / 2];
+		goods = new int[(1 + GameManager.Instance.FloorCount) * GameManager.Instance.FloorCount / 2];
 		Box.OnGoodsPlaced += ClearFloor;
 		GenerateFloorsAndBoxes();
 	}
 
 	private void GenerateFloorsAndBoxes()
 	{
-		for (int row = 0; row < floorCount; row++)
+		for (int row = 0; row < GameManager.Instance.FloorCount; row++)
 		{
 			float startX = (0f - (boxWidth + spacingX)) * (float)row / 2f;
 			float height = (0f - boxHeight) * (float)row + startPosition.y;
@@ -97,7 +94,7 @@ public class BoxController : MonoBehaviour
 
 	private void ShuffleGoods()
 	{
-		for (int floor = 1; floor < floorCount - 1; floor++)
+		for (int floor = 1; floor < GameManager.Instance.FloorCount - 1; floor++)
 		{
 			int nextFloorStartIndex = (floor + 2) * (floor + 1) / 2;
 			int currentFloorStartInde = floor * (floor + 1) / 2;
@@ -127,6 +124,7 @@ public class BoxController : MonoBehaviour
 		Box[] boxesOnFloor = floor.GetComponentsInChildren<Box>();
 		if (boxesOnFloor.All((Box b) => b.HasGoods && b.GoodsID == b.ColorID))
 		{
+			GameManager.Instance.OnFloorCleared();
 			Box[] array = boxesOnFloor;
 			foreach (Box b2 in array)
 			{

@@ -1,10 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    public int FloorCount { get { return floorCount; } }
+    [SerializeField] private int floorCount = 9;
+    
+    private int clearFloorCount = 0;
+
     private static GameManager instance;
     public static GameManager Instance
     {
@@ -23,6 +26,7 @@ public class GameManager : MonoBehaviour
             return instance;
         }
     }
+
     private void Awake()
     {
         if (instance == null)
@@ -46,5 +50,16 @@ public class GameManager : MonoBehaviour
     {
         SoundManager.Instance.Initialize();
     }
+    public void OnFloorCleared()
+    {
+        clearFloorCount++;
+        SoundManager.Instance.Play("ClearSound");
+
+        if (clearFloorCount != floorCount)
+            return;
+
+        Luna.Unity.LifeCycle.GameEnded();
+    }
+
 }
 

@@ -45,7 +45,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
                 this.offset = new UnityEngine.Vector3();
                 this.colorID = 0;
                 this.goodsID = 0;
-                this.offset = new pc.Vec3( 0.1, -0.3, -0.15 );
+                this.offset = new pc.Vec3( 0.165, -0.5, -0.285 );
                 this.waitSecond = 0.2;
             }
         },
@@ -123,7 +123,6 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
             boxWidth: 0,
             boxHeight: 0,
             spacingX: 0,
-            floorCount: 0,
             boxPrefab: null,
             floorMaterials: null,
             goodsMaterials: null,
@@ -135,7 +134,6 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
             init: function () {
                 this.startPosition = new UnityEngine.Vector3();
                 this.dropDuration = 2.0;
-                this.floorCount = 9;
             }
         },
         methods: {
@@ -156,7 +154,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
             Initialize: function () {
                 this.floors = new (System.Collections.Generic.List$1(UnityEngine.Transform)).ctor();
                 this.boxes = new (System.Collections.Generic.List$1(UnityEngine.GameObject)).ctor();
-                this.goods = System.Array.init(((Bridge.Int.div(Bridge.Int.mul((((1 + this.floorCount) | 0)), this.floorCount), 2)) | 0), 0, System.Int32);
+                this.goods = System.Array.init(((Bridge.Int.div(Bridge.Int.mul((((1 + GameManager.Instance.FloorCount) | 0)), GameManager.Instance.FloorCount), 2)) | 0), 0, System.Int32);
                 Box.addOnGoodsPlaced(Bridge.fn.cacheBind(this, this.ClearFloor));
                 this.GenerateFloorsAndBoxes();
             },
@@ -164,7 +162,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
 
             /*BoxController.GenerateFloorsAndBoxes start.*/
             GenerateFloorsAndBoxes: function () {
-                for (var row = 0; row < this.floorCount; row = (row + 1) | 0) {
+                for (var row = 0; row < GameManager.Instance.FloorCount; row = (row + 1) | 0) {
                     var startX = (0.0 - (this.boxWidth + this.spacingX)) * row / 2.0;
                     var height = (0.0 - this.boxHeight) * row + this.startPosition.y;
                     var floor = this.GenerateFloor(row, height);
@@ -199,7 +197,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
 
             /*BoxController.ShuffleGoods start.*/
             ShuffleGoods: function () {
-                for (var floor = 1; floor < ((this.floorCount - 1) | 0); floor = (floor + 1) | 0) {
+                for (var floor = 1; floor < ((GameManager.Instance.FloorCount - 1) | 0); floor = (floor + 1) | 0) {
                     var nextFloorStartIndex = (Bridge.Int.div(Bridge.Int.mul((((floor + 2) | 0)), (((floor + 1) | 0))), 2)) | 0;
                     var currentFloorStartInde = (Bridge.Int.div(Bridge.Int.mul(floor, (((floor + 1) | 0))), 2)) | 0;
                     for (var currentBoxIndex = currentFloorStartInde; currentBoxIndex < ((((currentFloorStartInde + floor) | 0) + 1) | 0); currentBoxIndex = (currentBoxIndex + 1) | 0) {
@@ -230,6 +228,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
                 if (System.Linq.Enumerable.from(boxesOnFloor, Box).all(function (b) {
                         return b.HasGoods && b.GoodsID === b.ColorID;
                     })) {
+                    GameManager.Instance.OnFloorCleared();
                     var array = boxesOnFloor;
                     $t = Bridge.getEnumerator(array);
                     try {
@@ -1847,7 +1846,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
             init: function () {
                 this.offsetHeightVec = new UnityEngine.Vector3();
                 this.offset = new UnityEngine.Vector3();
-                this.offset = new pc.Vec3( 0.1, -0.3, -0.15 );
+                this.offset = new pc.Vec3( 0.165, -0.5, -0.285 );
                 this.isDragging = false;
             }
         },
@@ -1875,6 +1874,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
             /*DraggableObject.OnMouseUp start.*/
             OnMouseUp: function () {
                 this.isDragging = false;
+                SoundManager.Instance.Play("MouseUpSound");
                 var ray = this.cam.ScreenPointToRay(UnityEngine.Input.mousePosition);
                 var hits = UnityEngine.Physics.RaycastAll$1(ray);
                 var array = hits;
@@ -1976,6 +1976,23 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
                 }
             }
         },
+        fields: {
+            floorCount: 0,
+            clearFloorCount: 0
+        },
+        props: {
+            FloorCount: {
+                get: function () {
+                    return this.floorCount;
+                }
+            }
+        },
+        ctors: {
+            init: function () {
+                this.floorCount = 9;
+                this.clearFloorCount = 0;
+            }
+        },
         methods: {
             /*GameManager.Awake start.*/
             Awake: function () {
@@ -2000,6 +2017,16 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
                 SoundManager.Instance.Initialize();
             },
             /*GameManager.Initialize end.*/
+
+            /*GameManager.OnFloorCleared start.*/
+            OnFloorCleared: function () {
+                this.clearFloorCount = (this.clearFloorCount + 1) | 0;
+                SoundManager.Instance.Play("ClearSound");
+                if (this.clearFloorCount === this.floorCount) {
+                    Luna.Unity.LifeCycle.GameEnded();
+                }
+            },
+            /*GameManager.OnFloorCleared end.*/
 
 
         }
@@ -2448,7 +2475,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
     /*Box end.*/
 
     /*BoxController start.*/
-    $m("BoxController", function () { return {"att":1048577,"a":2,"m":[{"a":2,"isSynthetic":true,"n":".ctor","t":1,"sn":"ctor"},{"a":1,"n":"Awake","t":8,"sn":"Awake","rt":$n[1].Void},{"a":1,"n":"ClearFloor","t":8,"pi":[{"n":"box","pt":Box,"ps":0}],"sn":"ClearFloor","rt":$n[1].Void,"p":[Box]},{"a":1,"n":"DropUpperFloors","t":8,"pi":[{"n":"floor","pt":$n[2].Transform,"ps":0}],"sn":"DropUpperFloors","rt":$n[1].Void,"p":[$n[2].Transform]},{"a":1,"n":"GenerateBox","t":8,"pi":[{"n":"row","pt":$n[1].Int32,"ps":0},{"n":"boxIndex","pt":$n[1].Int32,"ps":1},{"n":"floorTrans","pt":$n[2].Transform,"ps":2},{"n":"generatePosition","pt":$n[2].Vector3,"ps":3}],"sn":"GenerateBox","rt":$n[1].Void,"p":[$n[1].Int32,$n[1].Int32,$n[2].Transform,$n[2].Vector3]},{"a":1,"n":"GenerateFloor","t":8,"pi":[{"n":"row","pt":$n[1].Int32,"ps":0},{"n":"height","pt":$n[1].Single,"ps":1}],"sn":"GenerateFloor","rt":$n[2].GameObject,"p":[$n[1].Int32,$n[1].Single]},{"a":1,"n":"GenerateFloorsAndBoxes","t":8,"sn":"GenerateFloorsAndBoxes","rt":$n[1].Void},{"a":1,"n":"Initialize","t":8,"sn":"Initialize","rt":$n[1].Void},{"a":1,"n":"SetGoodsInBox","t":8,"sn":"SetGoodsInBox","rt":$n[1].Void},{"a":1,"n":"ShuffleGoods","t":8,"sn":"ShuffleGoods","rt":$n[1].Void},{"a":1,"n":"Start","t":8,"sn":"Start","rt":$n[1].Void},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"boxHeight","t":4,"rt":$n[1].Single,"sn":"boxHeight","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"boxPrefab","t":4,"rt":$n[2].GameObject,"sn":"boxPrefab"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"boxWidth","t":4,"rt":$n[1].Single,"sn":"boxWidth","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"a":1,"n":"boxes","t":4,"rt":$n[3].List$1(UnityEngine.GameObject),"sn":"boxes"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"dropDuration","t":4,"rt":$n[1].Single,"sn":"dropDuration","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"ease","t":4,"rt":$n[4].Ease,"sn":"ease","box":function ($v) { return Bridge.box($v, DG.Tweening.Ease, System.Enum.toStringFn(DG.Tweening.Ease));}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"floorCount","t":4,"rt":$n[1].Int32,"sn":"floorCount","box":function ($v) { return Bridge.box($v, System.Int32);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"floorMaterials","t":4,"rt":System.Array.type(UnityEngine.Material),"sn":"floorMaterials"},{"a":1,"n":"floors","t":4,"rt":$n[3].List$1(UnityEngine.Transform),"sn":"floors"},{"a":1,"n":"goods","t":4,"rt":$n[1].Array.type(System.Int32),"sn":"goods"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"goodsMaterials","t":4,"rt":System.Array.type(UnityEngine.Material),"sn":"goodsMaterials"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"spacingX","t":4,"rt":$n[1].Single,"sn":"spacingX","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"startPosition","t":4,"rt":$n[2].Vector3,"sn":"startPosition"}]}; }, $n);
+    $m("BoxController", function () { return {"att":1048577,"a":2,"m":[{"a":2,"isSynthetic":true,"n":".ctor","t":1,"sn":"ctor"},{"a":1,"n":"Awake","t":8,"sn":"Awake","rt":$n[1].Void},{"a":1,"n":"ClearFloor","t":8,"pi":[{"n":"box","pt":Box,"ps":0}],"sn":"ClearFloor","rt":$n[1].Void,"p":[Box]},{"a":1,"n":"DropUpperFloors","t":8,"pi":[{"n":"floor","pt":$n[2].Transform,"ps":0}],"sn":"DropUpperFloors","rt":$n[1].Void,"p":[$n[2].Transform]},{"a":1,"n":"GenerateBox","t":8,"pi":[{"n":"row","pt":$n[1].Int32,"ps":0},{"n":"boxIndex","pt":$n[1].Int32,"ps":1},{"n":"floorTrans","pt":$n[2].Transform,"ps":2},{"n":"generatePosition","pt":$n[2].Vector3,"ps":3}],"sn":"GenerateBox","rt":$n[1].Void,"p":[$n[1].Int32,$n[1].Int32,$n[2].Transform,$n[2].Vector3]},{"a":1,"n":"GenerateFloor","t":8,"pi":[{"n":"row","pt":$n[1].Int32,"ps":0},{"n":"height","pt":$n[1].Single,"ps":1}],"sn":"GenerateFloor","rt":$n[2].GameObject,"p":[$n[1].Int32,$n[1].Single]},{"a":1,"n":"GenerateFloorsAndBoxes","t":8,"sn":"GenerateFloorsAndBoxes","rt":$n[1].Void},{"a":1,"n":"Initialize","t":8,"sn":"Initialize","rt":$n[1].Void},{"a":1,"n":"SetGoodsInBox","t":8,"sn":"SetGoodsInBox","rt":$n[1].Void},{"a":1,"n":"ShuffleGoods","t":8,"sn":"ShuffleGoods","rt":$n[1].Void},{"a":1,"n":"Start","t":8,"sn":"Start","rt":$n[1].Void},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"boxHeight","t":4,"rt":$n[1].Single,"sn":"boxHeight","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"boxPrefab","t":4,"rt":$n[2].GameObject,"sn":"boxPrefab"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"boxWidth","t":4,"rt":$n[1].Single,"sn":"boxWidth","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"a":1,"n":"boxes","t":4,"rt":$n[3].List$1(UnityEngine.GameObject),"sn":"boxes"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"dropDuration","t":4,"rt":$n[1].Single,"sn":"dropDuration","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"ease","t":4,"rt":$n[4].Ease,"sn":"ease","box":function ($v) { return Bridge.box($v, DG.Tweening.Ease, System.Enum.toStringFn(DG.Tweening.Ease));}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"floorMaterials","t":4,"rt":System.Array.type(UnityEngine.Material),"sn":"floorMaterials"},{"a":1,"n":"floors","t":4,"rt":$n[3].List$1(UnityEngine.Transform),"sn":"floors"},{"a":1,"n":"goods","t":4,"rt":$n[1].Array.type(System.Int32),"sn":"goods"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"goodsMaterials","t":4,"rt":System.Array.type(UnityEngine.Material),"sn":"goodsMaterials"},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"spacingX","t":4,"rt":$n[1].Single,"sn":"spacingX","box":function ($v) { return Bridge.box($v, System.Single, System.Single.format, System.Single.getHashCode);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"startPosition","t":4,"rt":$n[2].Vector3,"sn":"startPosition"}]}; }, $n);
     /*BoxController end.*/
 
     /*DraggableObject start.*/
@@ -2464,7 +2491,7 @@ Bridge.assembly("UnityScriptsCompiler", function ($asm, globals) {
     /*ESoundType end.*/
 
     /*GameManager start.*/
-    $m("GameManager", function () { return {"att":1048577,"a":2,"m":[{"a":2,"isSynthetic":true,"n":".ctor","t":1,"sn":"ctor"},{"a":1,"n":"Awake","t":8,"sn":"Awake","rt":$n[1].Void},{"a":1,"n":"Initialize","t":8,"sn":"Initialize","rt":$n[1].Void},{"a":1,"n":"Start","t":8,"sn":"Start","rt":$n[1].Void},{"a":2,"n":"Instance","is":true,"t":16,"rt":GameManager,"g":{"a":2,"n":"get_Instance","t":8,"rt":GameManager,"fg":"Instance","is":true},"fn":"Instance"},{"a":1,"n":"instance","is":true,"t":4,"rt":GameManager,"sn":"instance"}]}; }, $n);
+    $m("GameManager", function () { return {"att":1048577,"a":2,"m":[{"a":2,"isSynthetic":true,"n":".ctor","t":1,"sn":"ctor"},{"a":1,"n":"Awake","t":8,"sn":"Awake","rt":$n[1].Void},{"a":1,"n":"Initialize","t":8,"sn":"Initialize","rt":$n[1].Void},{"a":2,"n":"OnFloorCleared","t":8,"sn":"OnFloorCleared","rt":$n[1].Void},{"a":1,"n":"Start","t":8,"sn":"Start","rt":$n[1].Void},{"a":2,"n":"FloorCount","t":16,"rt":$n[1].Int32,"g":{"a":2,"n":"get_FloorCount","t":8,"rt":$n[1].Int32,"fg":"FloorCount","box":function ($v) { return Bridge.box($v, System.Int32);}},"fn":"FloorCount"},{"a":2,"n":"Instance","is":true,"t":16,"rt":GameManager,"g":{"a":2,"n":"get_Instance","t":8,"rt":GameManager,"fg":"Instance","is":true},"fn":"Instance"},{"a":1,"n":"clearFloorCount","t":4,"rt":$n[1].Int32,"sn":"clearFloorCount","box":function ($v) { return Bridge.box($v, System.Int32);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"floorCount","t":4,"rt":$n[1].Int32,"sn":"floorCount","box":function ($v) { return Bridge.box($v, System.Int32);}},{"a":1,"n":"instance","is":true,"t":4,"rt":GameManager,"sn":"instance"}]}; }, $n);
     /*GameManager end.*/
 
     /*Goods start.*/

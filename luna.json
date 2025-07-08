@@ -1,7 +1,7 @@
 {
     "version": "6.3.0",
     "projectId": "1ea3bb43f778449c78ecaf64beaf075a",
-    "applicationID": 31170,
+    "applicationID": 0,
     "creativeName": "jkj9513-naver-com",
     "pgServer": "EU",
     "window": {
@@ -27314,10 +27314,22 @@
                     },
                     {
                         "name": "Instance#get",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "Initialize",
+                        "excluded": false
+                    },
+                    {
+                        "name": "FloorCount#get",
+                        "excluded": false
+                    },
+                    {
+                        "name": "init",
+                        "excluded": false
+                    },
+                    {
+                        "name": "OnFloorCleared",
                         "excluded": false
                     }
                 ]

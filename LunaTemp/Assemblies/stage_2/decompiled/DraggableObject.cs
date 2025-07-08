@@ -7,7 +7,7 @@ public class DraggableObject : MonoBehaviour
 
 	private Vector3 offsetHeightVec;
 
-	private Vector3 offset = new Vector3(0.1f, -0.3f, -0.15f);
+	private Vector3 offset = new Vector3(0.165f, -0.5f, -0.285f);
 
 	private Box originalBox;
 
@@ -35,6 +35,7 @@ public class DraggableObject : MonoBehaviour
 	private void OnMouseUp()
 	{
 		isDragging = false;
+		SoundManager.Instance.Play("MouseUpSound");
 		Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 		RaycastHit[] hits = Physics.RaycastAll(ray);
 		RaycastHit[] array = hits;
