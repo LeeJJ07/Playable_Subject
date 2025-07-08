@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.Rendering.DebugUI.Table;
 
@@ -16,9 +18,12 @@ public class BoxController: MonoBehaviour
 
     [SerializeField] private Material[] floorMaterials;
     [SerializeField] private Material[] goodsMaterials;
+
     private List<Transform> floors;
+    private List<GameObject> boxes;
+    private int[] goods;
     
-    void Awake()
+    private void Awake()
     {
         Initialize();
     }
@@ -26,8 +31,15 @@ public class BoxController: MonoBehaviour
     private void Initialize()
     {
         floors = new List<Transform>();
+        boxes = new List<GameObject>();
+        goods = new int[(1 + floorCount) * floorCount / 2];
 
         GenerateFloorsAndBoxes();
+    }
+    private void Start()
+    {
+        ShuffleGoods();
+        SetGoodsInBox();
     }
     private void GenerateFloorsAndBoxes()
     {
@@ -42,7 +54,7 @@ public class BoxController: MonoBehaviour
             {
                 Vector3 generatePosition = new Vector3(startX + boxIndex * (spacingX + boxWidth), 0.0f, 0.0f);
 
-                GenerateBox(row, floor.transform, generatePosition);
+                GenerateBox(row, boxIndex, floor.transform, generatePosition);
             }
         }
     }
@@ -55,16 +67,44 @@ public class BoxController: MonoBehaviour
 
         return floor;
     }
-    private void GenerateBox(int row, Transform floorTrans, Vector3 generatePosition)
+    private void GenerateBox(int row, int boxIndex, Transform floorTrans, Vector3 generatePosition)
     {
         GameObject box = Instantiate(boxPrefab, floorTrans);
         box.transform.localPosition = generatePosition;
         box.GetComponent<MeshRenderer>().sharedMaterial = floorMaterials[row];
 
         box.GetComponent<Box>().ColorID = row;
-        if (row == 0)
-            return;
+        goods[(1 + row) * row / 2 + boxIndex] = row;
 
-        box.GetComponent<Box>().SetGoodsMaterial(goodsMaterials[row - 1]);
+        boxes.Add(box);
     }
+
+    private void ShuffleGoods()
+    {
+        for(int floor = 1; floor < floorCount - 1; floor++)
+        {
+            int nextFloorStartIndex = (floor + 2) * (floor + 1) / 2;
+            int currentFloorStartInde = floor * (floor + 1) / 2;
+
+            for (int currentBoxIndex = currentFloorStartInde; currentBoxIndex < currentFloorStartInde + floor + 1; currentBoxIndex++)
+            {
+                int swapTargetIndex = Random.Range(nextFloorStartIndex, goods.Length);
+
+                int temp = goods[currentBoxIndex];
+                goods[currentBoxIndex] = goods[swapTargetIndex];
+                goods[swapTargetIndex] = temp;
+            }
+        }
+    }
+
+    private void SetGoodsInBox()
+    {
+        for (int boxIndex = 1; boxIndex < boxes.Count; boxIndex++)
+        {
+            Box box = boxes[boxIndex].GetComponent<Box>();
+            box.SetGoodsMaterial(goodsMaterials[goods[boxIndex] - 1]);
+            box.GoodsID = goods[boxIndex];
+        }
+    }
+
 }

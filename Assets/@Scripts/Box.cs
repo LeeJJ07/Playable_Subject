@@ -10,6 +10,8 @@ public class Box : MonoBehaviour
 
     public int ColorID { get { return colorID; } set { colorID = value; } }
     private int colorID = 0;
+    public int GoodsID { get { return goodsID; } set { goodsID = value; } }
+    private int goodsID = -1;
 
     private Vector3 offset = new Vector3(0.1f, -0.3f, -0.15f);
     private float waitSecond = 0.2f;
