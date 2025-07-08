@@ -13,6 +13,7 @@ public class BoxController: MonoBehaviour
     [SerializeField] private int floorCount = 9;
     [SerializeField] private GameObject boxPrefab;
 
+    [SerializeField] private Material[] floorMaterials;
     private List<Transform> floors;
     
     void Start()
@@ -43,6 +44,7 @@ public class BoxController: MonoBehaviour
                 Vector3 pos = new Vector3(startX + boxIndex * (spacingX + boxWidth), 0.0f, 0.0f);
                 GameObject box = Instantiate(boxPrefab, floor.transform);
                 box.transform.localPosition = pos;
+                box.GetComponent<MeshRenderer>().sharedMaterial = floorMaterials[row];
             }
         }
     }
