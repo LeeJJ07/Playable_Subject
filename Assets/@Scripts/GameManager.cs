@@ -87,9 +87,10 @@ public class GameManager : MonoBehaviour
     {
         SoundManager.Instance.Initialize();
     }
-    public void OnFloorCleared()
+    public void OnFloorCleared(Vector3 floorPos)
     {
         clearFloorCount++;
+        feedbackUIController.ShowNiceImageAtFloor(floorPos);
         SoundManager.Instance.Play("ClearSound");
 
         if (clearFloorCount != floorCount)

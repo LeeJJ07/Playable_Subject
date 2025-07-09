@@ -117,7 +117,7 @@ public class BoxController: MonoBehaviour
         if (!boxesOnFloor.All(b => b.HasGoods && b.GoodsID == b.ColorID))
             return;
 
-        GameManager.Instance.OnFloorCleared();
+        GameManager.Instance.OnFloorCleared(floor.transform.position);
 
         foreach (var b in boxesOnFloor)
         {

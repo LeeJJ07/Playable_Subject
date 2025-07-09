@@ -2,11 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.UI;
 public class FeedbackUIController : MonoBehaviour
 {
+    [SerializeField] private Camera mainCamera;
+
     [SerializeField] private GameObject guidePanel; 
-    [SerializeField] private TextMeshProUGUI guideText; 
+    [SerializeField] private TextMeshProUGUI guideText;
+
+    [SerializeField] private GameObject clearFloorPanel;
+    [SerializeField] private RectTransform niceImageRect;
+    [SerializeField] private Image niceImage;
+
     private RectTransform guideTextRect; 
     private Vector2 guideTextStartPos;
 
@@ -16,8 +25,6 @@ public class FeedbackUIController : MonoBehaviour
         guideTextRect = guideText.rectTransform;
         guideTextStartPos = guideTextRect.anchoredPosition;
     }
-
-
     public void OnEnableGuideUI()
     {
         guidePanel.SetActive(true);
@@ -34,5 +41,23 @@ public class FeedbackUIController : MonoBehaviour
     {
         tween?.Kill();
         guidePanel.SetActive(false);
+    }
+    public void ShowNiceImageAtFloor(Vector3 floorPos)
+    {
+        clearFloorPanel.SetActive(true);
+
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(floorPos);
+        niceImageRect.position = screenPos;
+
+        niceImage.DOFade(1.0f, 0.2f)
+        .OnComplete(() =>
+        {
+            niceImage.DOFade(0.0f, 0.8f)
+                .SetDelay(0.6f)
+                .OnComplete(() =>
+                {
+                    clearFloorPanel.SetActive(false);
+                });
+        });
     }
 }
