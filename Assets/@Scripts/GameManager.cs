@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private FeedbackUIController feedbackUIController;
+
+    private bool isGuidePopupOn = true;
+    private bool isMotionDetected = false;
+    private float inactivityTimer = 0.0f;
+    private float inactivityTime = 5.0f;
 
     public int FloorCount { get { return floorCount; } }
     [SerializeField] private int floorCount = 9;
@@ -44,6 +50,37 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SoundManager.Instance.Play("BackGroundMusic", ESoundType.BGM);
+
+        feedbackUIController.OnEnableGuideUI();
+    }
+    private void Update()
+    {
+        OnTimer();
+    }
+
+    private void OnTimer()
+    {
+        if (isMotionDetected || isGuidePopupOn)
+            return;
+
+        inactivityTimer += Time.deltaTime;
+        if(inactivityTimer > inactivityTime)
+        {
+            feedbackUIController.OnEnableGuideUI();
+            isGuidePopupOn = true;
+            inactivityTimer = 0.0f;
+        }
+    }
+    public void IsMotionDetect(bool isMotionDetect)
+    {
+        isMotionDetected = isMotionDetect;
+
+        if (!isMotionDetected)
+            return;
+
+        inactivityTimer = 0.0f;
+        feedbackUIController.OnDisableGuideUI();
+        isGuidePopupOn = !isMotionDetect;
     }
 
     private void Initialize()
@@ -60,6 +97,8 @@ public class GameManager : MonoBehaviour
 
         Luna.Unity.LifeCycle.GameEnded();
     }
+
+
 
 }
 

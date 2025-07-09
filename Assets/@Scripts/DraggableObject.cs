@@ -29,12 +29,15 @@ public class DraggableObject : MonoBehaviour
     {
         isDragging = true;
         originalBox = transform.parent.GetComponent<Box>();
+
+        GameManager.Instance.IsMotionDetect(true);
     }
 
     private void OnMouseUp()
     {
         isDragging = false;
 
+        GameManager.Instance.IsMotionDetect(false);
         SoundManager.Instance.Play("MouseUpSound");
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
