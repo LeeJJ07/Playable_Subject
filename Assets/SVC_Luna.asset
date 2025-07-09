@@ -533,7 +533,7 @@ MonoBehaviour:
     - _SHADOWS_SOFT_MEDIUM
   _includedShaderVariants: []
   _excludedShaderVariants: []
-  version: 94
+  version: 115
   _shaderParsedShaders:
   - ParsedSubShaders:
     - Index: 0
@@ -12510,7 +12510,7 @@ MonoBehaviour:
   _sceneLightData:
     PointLightCount: 0
     SpotLightCount: 0
-    DirectionalLightCount: 17
+    DirectionalLightCount: 21
     LightmapOn: 0
     DirlightmapCombined: 0
     DirectionalCookieExists: 0

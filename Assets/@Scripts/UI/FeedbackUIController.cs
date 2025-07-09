@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.UI;
 public class FeedbackUIController : MonoBehaviour
