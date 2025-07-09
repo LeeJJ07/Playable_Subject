@@ -4,6 +4,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private FeedbackUIController feedbackUIController;
 
+    private bool isClearGame = false;
+
     private bool isGuidePopupOn = true;
     private bool isMotionDetected = false;
     private float inactivityTimer = 0.0f;
@@ -12,7 +14,7 @@ public class GameManager : MonoBehaviour
     public int FloorCount { get { return floorCount; } }
     [SerializeField] private int floorCount = 9;
     
-    private int clearFloorCount = 0;
+    private int curClearFloorCount = 0;
 
     private static GameManager instance;
     public static GameManager Instance
@@ -60,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     private void OnTimer()
     {
-        if (isMotionDetected || isGuidePopupOn)
+        if (isMotionDetected || isGuidePopupOn || isClearGame)
             return;
 
         inactivityTimer += Time.deltaTime;
@@ -89,17 +91,18 @@ public class GameManager : MonoBehaviour
     }
     public void OnFloorCleared(Vector3 floorPos)
     {
-        clearFloorCount++;
-        feedbackUIController.ShowNiceImageAtFloor(floorPos);
-        SoundManager.Instance.Play("ClearSound");
-
-        if (clearFloorCount != floorCount)
+        curClearFloorCount++;
+        
+        if (curClearFloorCount + 1 != floorCount)
+        {
+            feedbackUIController.ShowNiceImageAtFloor(floorPos);
+            SoundManager.Instance.Play("FloorClearSound");
             return;
+        }
 
-        Luna.Unity.LifeCycle.GameEnded();
+        SoundManager.Instance.Play("StageClearSound");
+        feedbackUIController.ShowStageClearImage();
+        isClearGame = true;
     }
-
-
-
 }
 
