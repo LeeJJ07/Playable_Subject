@@ -16,6 +16,9 @@ public class FeedbackUIController : MonoBehaviour
     [SerializeField] private RectTransform niceImageRect;
     [SerializeField] private Image niceImage;
 
+    [SerializeField] private GameObject stageClearPanel;
+    [SerializeField] private Image stageClearImage;
+
     private RectTransform guideTextRect; 
     private Vector2 guideTextStartPos;
 
@@ -59,5 +62,11 @@ public class FeedbackUIController : MonoBehaviour
                     clearFloorPanel.SetActive(false);
                 });
         });
+    }
+
+    public void ShowStageClearImage()
+    {
+        stageClearPanel.SetActive(true);
+        stageClearImage.DOFade(1.0f, 0.4f);
     }
 }
