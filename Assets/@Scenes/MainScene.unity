@@ -370,7 +370,6 @@ MonoBehaviour:
   boxWidth: 0.78
   boxHeight: 0.985
   spacingX: 0.08
-  floorCount: 9
   boxPrefab: {fileID: 745254804199330821, guid: 71d2f213bf9b29a4aa697d91ae70dd9e,
     type: 3}
   floorMaterials:
@@ -662,7 +661,7 @@ GameObject:
   - component: {fileID: 1256486316}
   - component: {fileID: 1256486315}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: BackgroundCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -848,6 +847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0f099d84414eb9459a202a0b6080695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floorCount: 9
 --- !u!4 &2107371173
 Transform:
   m_ObjectHideFlags: 0
